@@ -19,9 +19,8 @@ FoodChain — це Spring Boot проєкт, що імітує **харчови�
 
 1. Клонувати репозиторій
 2. Налуштувати application.properties під себе, а саме:
-                                             підставити назву БД
-                                                      |
-spring.datasource.url=jdbc:mysql://localhost:3306/foodchain?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+
+spring.datasource.url=jdbc:mysql://localhost:3306/foodchain <--- підставити назву БД  ?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
 spring.datasource.username=root       <--- Вписати користувача
 spring.datasource.password=password   <--- Вписати пароль
 
