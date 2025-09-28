@@ -17,12 +17,13 @@ FoodChain — це Spring Boot проєкт, що імітує **харчови�
 
 ##########---Для початку роботи вам треба---##########
 
-1. Клонувати репозиторій
+1. Клонувати репозиторій  
 2. Налуштувати application.properties під себе, а саме:
 
-spring.datasource.url=jdbc:mysql://localhost:3306/foodchain <--- підставити назву БД  ?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-spring.datasource.username=root       <--- Вписати користувача
-spring.datasource.password=password   <--- Вписати пароль
+(foodchain)<--- підставити назву вашої БД  
+spring.datasource.url=jdbc:mysql://localhost:3306/foodchain?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC   
+spring.datasource.username=root       <--- Вписати користувача  
+spring.datasource.password=password   <--- Вписати пароль  
 
 ##########---Крок другий, запуск та початок роботи---##########
 
