@@ -1,3 +1,7 @@
+// DTO (Data Transfer Object) для лева.
+// Використовується, щоб передавати лише потрібні дані у відповідях API,
+// наприклад імена з’їдених тварин, а не повні сутності з бази.
+
 package com.kornievstas.FoodChain.dto;
 
 import java.util.ArrayList;

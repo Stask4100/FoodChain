@@ -37,6 +37,10 @@ public class LionController {
                             @RequestParam String foodName,
                             @RequestParam String foodType) {
 
+        // Ми перевіряємо, який саме тип їжі передав користувач (коза чи корова).
+        // Якщо foodType = "goat", викликаємо метод сервісу, який годує лева козою.
+        // Якщо foodType = "cow", викликаємо метод сервісу, який годує лева коровою.
+        // Якщо foodType невідомий — кидаємо помилку.
         switch (foodType.toLowerCase()) {
             case "goat":
                 return lionService.feedLionWithGoat(lionName, foodName);
