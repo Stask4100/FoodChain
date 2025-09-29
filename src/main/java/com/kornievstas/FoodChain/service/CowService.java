@@ -1,7 +1,9 @@
 package com.kornievstas.FoodChain.service;
 
 import com.kornievstas.FoodChain.dto.CowDto;
+import com.kornievstas.FoodChain.dto.GoatDto;
 import com.kornievstas.FoodChain.entity.Cow;
+import com.kornievstas.FoodChain.entity.Goat;
 import com.kornievstas.FoodChain.entity.Grass;
 import com.kornievstas.FoodChain.exception.AlreadyDeadException;
 import com.kornievstas.FoodChain.exception.AlreadyExistsException;
@@ -10,6 +12,8 @@ import com.kornievstas.FoodChain.exception.NotFoundException;
 import com.kornievstas.FoodChain.mapper.CowMapper;
 import com.kornievstas.FoodChain.repository.CowRepository;
 import com.kornievstas.FoodChain.repository.GrassRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,25 +57,16 @@ public class CowService {
         return cowMapper.toDto(cow);
     }
 
-    public CowDto feedCowWithGrass(String cowName, String grassName) {
+    @Transactional
+    public CowDto feedCowWithGrass(String cowName) {
         Cow cow = cowRepository.findByName(cowName)
-                .orElseThrow(() -> new NotFoundException("Cow not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Cow not found: " + cowName));
 
-        if (!cow.isAlive()) {
-            throw new InvalidActionException("Cannot feed dead cow");
-        }
-
-        Grass grass = grassRepository.findByName(grassName)
-                .orElseThrow(() -> new NotFoundException("Grass not found"));
-
-        if (!grass.isAlive()) {
-            throw new AlreadyDeadException("Grass is already eaten");
-        }
-
+        Grass grass = new Grass();
         cow.eatGrass(grass);
-        grass.setAlive(false);
         grassRepository.save(grass);
+        cowRepository.save(cow);
 
-        return cowMapper.toDto(cowRepository.save(cow));
+        return cowMapper.toDto(cow);
     }
 }

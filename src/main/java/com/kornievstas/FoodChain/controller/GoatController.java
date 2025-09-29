@@ -31,10 +31,10 @@ public class GoatController {
         return goatService.getGoat(name);
     }
 
-    @PutMapping("/{goatName}/eat-grass/{grassName}")
-    public GoatDto feedGoatWithGrass(@PathVariable String goatName,
-                                     @PathVariable String grassName) {
-        return goatService.feedGoatWithGrass(goatName, grassName);
+    @PutMapping("/{goatName}/eat-grass")
+    public GoatDto feedGoatWithGrass(@PathVariable String goatName) {
+        return goatService.feedGoatWithGrass(goatName);
     }
+
 
 }

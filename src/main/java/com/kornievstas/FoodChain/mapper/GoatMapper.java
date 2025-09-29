@@ -21,7 +21,7 @@ public interface GoatMapper {
     default List<String> mapGrassesToNames(List<Grass> grasses) {
         if (grasses == null) return null;
         return grasses.stream()
-                .map(Grass::getName)
+                .map(g -> "Grass")
                 .collect(Collectors.toList());
     }
 }

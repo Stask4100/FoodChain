@@ -1,6 +1,7 @@
 package com.kornievstas.FoodChain.controller;
 
 import com.kornievstas.FoodChain.dto.CowDto;
+import com.kornievstas.FoodChain.dto.GoatDto;
 import com.kornievstas.FoodChain.service.CowService;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,9 +32,8 @@ public class CowController {
         return cowService.getCow(name);
     }
 
-    @PutMapping("/{cowName}/eat-grass/{grassName}")
-    public CowDto feedCowWithGrass(@PathVariable String cowName,
-                                     @PathVariable String grassName) {
-        return cowService.feedCowWithGrass(cowName, grassName);
+    @PutMapping("/{cowName}/eat-grass")
+    public CowDto feedCowWithGrass(@PathVariable String cowName) {
+        return cowService.feedCowWithGrass(cowName);
     }
 }
