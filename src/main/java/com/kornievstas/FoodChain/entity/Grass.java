@@ -1,9 +1,15 @@
 package com.kornievstas.FoodChain.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "grasses")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Grass {
 
     @Id
@@ -17,27 +23,4 @@ public class Grass {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "eaten_by_cow_id")
     private Cow eatenByCow;
-
-    public Grass() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Goat getEatenByGoat() {
-        return eatenByGoat;
-    }
-
-    public void setEatenByGoat(Goat eatenByGoat) {
-        this.eatenByGoat = eatenByGoat;
-    }
-
-    public Cow getEatenByCow() {
-        return eatenByCow;
-    }
-
-    public void setEatenByCow(Cow eatenByCow) {
-        this.eatenByCow = eatenByCow;
-    }
 }

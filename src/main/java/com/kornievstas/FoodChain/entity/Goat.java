@@ -1,12 +1,18 @@
 package com.kornievstas.FoodChain.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "goats")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Goat {
 
     @Id
@@ -17,67 +23,22 @@ public class Goat {
     private String name;
 
     @Column(nullable = false)
-    private boolean alive;
+    private boolean alive = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "eaten_by_lion_id")
     private Lion eatenByLion;
+
     @OneToMany(mappedBy = "eatenByGoat", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Grass> eatenGrasses = new ArrayList<>();
-
-
-    public Goat() {
-        this.alive = true;
-    }
 
     public Goat(String name) {
         this.name = name;
         this.alive = true;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean isAlive() {
-        return alive;
-    }
-
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
-
-    public Lion getEatenByLion() {
-        return eatenByLion;
-    }
-
-    public void setEatenByLion(Lion eatenByLion) {
-        this.eatenByLion = eatenByLion;
-    }
-
-    public List<Grass> getEatenGrasses() {
-        return eatenGrasses;
-    }
-
-    public void setEatenGrasses(List<Grass> eatenGrasses) {
-        this.eatenGrasses = eatenGrasses;
-    }
-
     public void eatGrass(Grass grass) {
         this.eatenGrasses.add(grass);
         grass.setEatenByGoat(this);
     }
-
 }
