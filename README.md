@@ -1,69 +1,185 @@
-##########---FoodChain---##########
+# FoodChain
 
-FoodChain — це Spring Boot проєкт, що імітує **харчовий ланцюг**.
-Тут можна створювати тварин (левів, кіз, корів) і траву, а також виконувати дії:
-- годувати тварин
-- переглядати всіх створених тварин
-- переглядати тварин за іменами
-- обробляти помилки (мертву тварину не можна годувати, траву не можна їсти двічі).
+**FoodChain** is a Spring Boot project that simulates a **food chain**.  
+You can create animals (lions, goats, cows) and grass, as well as perform actions:
+- feed animals
+- view all created animals
+- find animals by name
+- handle errors (e.g., dead animals cannot be fed, grass cannot be eaten twice).
 
-## Використані технології
-- **---Java 21
-- **---Spring Boot            (Web, Data JPA)
-- **---Hibernate
-- **---H2 Database            (in-memory, для тестів)
-- **---MySQL                  (основна БД)
-- **---JUnit 5 + Mockito      (тестування)
+---
 
-##########---Для початку роботи вам треба---##########
+##  Technologies Used
+- **Java 21**
+- **Spring Boot** (Web, Data JPA)
+- **Hibernate**
+- **H2 Database** (in-memory, for testing)
+- **MySQL** (main database)
+- **JUnit 5 + Mockito** (testing)
 
-1. Клонувати репозиторій  
-2. Налуштувати application.properties під себе, а саме:
+---
 
-(foodchain)<--- підставити назву вашої БД  
-spring.datasource.url=jdbc:mysql://localhost:3306/foodchain?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC   
-spring.datasource.username=root       <--- Вписати користувача  
-spring.datasource.password=password   <--- Вписати пароль  
+## ⚙️ Getting Started
 
-##########---Крок другий, запуск та початок роботи---##########
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Stask4100/foodchain.git
+   ```
 
-1. Запускаємо - FoodChainApplication
-2. Перевіряємо чи запустили ми нашу БД (mySql), та чи вірно вона підключена
-3. Для зручності відкриваємо Postman
-4. Прописуємо у строку для запитив команди по типу - http://localhost:8080/lions
+2. Configure `application.properties`:
+   ```properties
+   spring.datasource.url=jdbc:mysql://localhost:3306/foodchain?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+   spring.datasource.username=root
+   spring.datasource.password=password
+   ```
 
-####################################---Усі Ендпоїнти (запити) для роботи---####################################
-#                                                                                                             #
-# Лев                                                                                                         #
-#     POST localhost:8080/lions/{ім'я} — Створення нового лева з указаним ім'ям.                              #
-#      GET localhost:8080/lions — Отримання списку всіх створених левів.                                      #
-#      GET localhost:8080/lions/{ім'я} — Отримання інформації про конкретного лева за ім’ям.                  #
-#      PUT localhost:8080/lions/{ім'я лева}&foodName={ім'я тварини}&foodType={cow або goat} — Погодувати лева #
-#                                                                                                             #
-#                                                                                                             #
-#  Корова                                                                                                     #
-#      POST localhost:8080/cows/{ім'я} — Створення нової корови з указаним ім’ям.                             #
-#      GET localhost:8080/cows — Отримання списку всіх створених корів.                                       #
-#      GET localhost:8080/cows/{ім'я} — Отримання інформації про конкретну корову за ім’ям.                   #
-#      PUT localhost:8080/cows/{ім'я} — Погодувати корову                                                     #
-#                                                                                                             #
-#                                                                                                             #
-#  Коза                                                                                                       #
-#      POST localhost:8080/goats/{ім'я} — Створення нової кози з указаним ім’ям.                              #
-#      GET localhost:8080/goats — Отримання списку всіх створених кіз.                                        #
-#      GET localhost:8080/goats/{ім'я} — Отримання інформації про конкретну козу за ім’ям.                    #
-#      PUT localhost:8080/goats/{ім'я} — Погодувати козу                                                      #
-#                                                                                                             #
-#                                                                                                             #
-#  Трава                                                                                                      #
-#      POST localhost:8080/grass/{ім'я} — Створення нової трави з указаною назвою.                            #
-#      GET localhost:8080/grass - Отримання списку всієї створеної трави.                                     #
-#      GET localhost:8080/grass/{ім'я} - Отримання інформації про конкретну траву.                            #
-#                                                                                                             #
-###############################################################################################################
+   > Replace **foodchain**, **username**, and **password** with your own database configuration.
 
-##########---Інформація для коректної роботи---##########
-1. Якщо треба когось погодувати, наприклад лева, треба створити козу або корову, тільки їх їсть лев, якщо козу або корову, створіть травичку
-2. Якщо тварина або травичка вже з'їдена, її не можна з'їсти повторно
-3. Не можна створювати тварин або травичку з однаковою назвою (Всі імена або назва травички повинні бути унікальні)
-4. Перевіряйте запити, чи корректно ви все ввели та чи правильні данні у вас для вашої БД
+3. Start the application:
+   - Run `FoodChainApplication`
+   - Ensure MySQL is running and properly connected
+   - Open **Postman** (or similar tool)
+   - Test endpoints, e.g.:
+     ```
+     http://localhost:8080/lions
+     ```
+
+---
+
+##  Endpoints
+
+###  Lion
+- **Create a lion**
+  ```http
+  POST /lions
+  Content-Type: application/json
+
+  {
+    "name": "Simba"
+  }
+  ```
+
+  **Response**:
+  ```json
+  {
+    "name": "Simba",
+    "alive": true
+  }
+  ```
+
+- **Get all lions**
+  ```http
+  GET /lions
+  ```
+
+- **Get lion by name**
+  ```http
+  GET /lions/{name}
+  ```
+
+- **Feed a lion**
+  ```http
+  PUT /lions/{lionName}?foodName={animalName}&foodType={cow|goat}
+  ```
+
+  Example:
+  ```http
+  PUT /lions/Simba?foodName=Goaty&foodType=goat
+  ```
+
+  **Response**:
+  ```json
+  {
+    "lion": "Simba",
+    "ate": "Goaty",
+    "status": "successful"
+  }
+  ```
+
+---
+
+###  Cow
+- **Create a cow**
+  ```http
+  POST /cows
+  Content-Type: application/json
+
+  {
+    "name": "Bessie"
+  }
+  ```
+
+- **Get all cows**
+  ```http
+  GET /cows
+  ```
+
+- **Get cow by name**
+  ```http
+  GET /cows/{name}
+  ```
+
+---
+
+###  Goat
+- **Create a goat**
+  ```http
+  POST /goats
+  Content-Type: application/json
+
+  {
+    "name": "Goaty"
+  }
+  ```
+
+- **Get all goats**
+  ```http
+  GET /goats
+  ```
+
+- **Get goat by name**
+  ```http
+  GET /goats/{name}
+  ```
+
+---
+
+###  Grass
+- **Create grass**
+  ```http
+  POST /grass
+  Content-Type: application/json
+
+  {
+    "name": "FreshGrass"
+  }
+  ```
+
+- **Get all grass**
+  ```http
+  GET /grass
+  ```
+
+- **Get grass by name**
+  ```http
+  GET /grass/{name}
+  ```
+
+---
+
+##  Rules & Restrictions
+1. To feed a lion → create a goat or cow.  
+   To feed a goat/cow → create grass.  
+2. Once an animal/grass is eaten, it **cannot** be eaten again.  
+3. Names of animals and grass must be **unique**.  
+4. Invalid requests will return appropriate error messages.  
+
+---
+
+##  Testing
+- H2 Database is used for tests
+- Unit tests include:
+  - successful creation
+  - duplicate name validation
+  - feeding rules
+  - invalid requests
