@@ -19,7 +19,7 @@ You can create animals (lions, goats, cows) and grass, as well as perform action
 
 ---
 
-## ⚙️ Getting Started
+##  Getting Started
 
 1. Clone the repository:
    ```bash
@@ -106,6 +106,7 @@ You can create animals (lions, goats, cows) and grass, as well as perform action
 
   {
     "name": "Bessie"
+    "alive": true
   }
   ```
 
@@ -119,6 +120,11 @@ You can create animals (lions, goats, cows) and grass, as well as perform action
   GET /cows/{name}
   ```
 
+  - **Feed cow by name**
+  ```http
+  PUT /cows/{name}/eat-grass
+  ```
+
 ---
 
 ###  Goat
@@ -129,6 +135,7 @@ You can create animals (lions, goats, cows) and grass, as well as perform action
 
   {
     "name": "Goaty"
+    "alive": true
   }
   ```
 
@@ -142,44 +149,15 @@ You can create animals (lions, goats, cows) and grass, as well as perform action
   GET /goats/{name}
   ```
 
----
-
-###  Grass
-- **Create grass**
+  - **Feed goat by name**
   ```http
-  POST /grass
-  Content-Type: application/json
-
-  {
-    "name": "FreshGrass"
-  }
-  ```
-
-- **Get all grass**
-  ```http
-  GET /grass
-  ```
-
-- **Get grass by name**
-  ```http
-  GET /grass/{name}
+  PUT /goats/{name}/eat-grass
   ```
 
 ---
 
 ##  Rules & Restrictions
 1. To feed a lion → create a goat or cow.  
-   To feed a goat/cow → create grass.  
 2. Once an animal/grass is eaten, it **cannot** be eaten again.  
-3. Names of animals and grass must be **unique**.  
+3. Names of animals must be **unique**.  
 4. Invalid requests will return appropriate error messages.  
-
----
-
-##  Testing
-- H2 Database is used for tests
-- Unit tests include:
-  - successful creation
-  - duplicate name validation
-  - feeding rules
-  - invalid requests
