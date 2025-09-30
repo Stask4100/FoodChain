@@ -9,7 +9,6 @@ import com.kornievstas.FoodChain.mapper.CowMapper;
 import com.kornievstas.FoodChain.repository.CowRepository;
 import com.kornievstas.FoodChain.repository.GrassRepository;
 import com.kornievstas.FoodChain.service.CowService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -55,22 +54,29 @@ public class CowServiceImpl implements CowService {
     @Override
     public CowDto getCow(String name) {
         Cow cow = cowRepository.findByName(name)
-                .orElseThrow(() -> new NotFoundException("Cow not found"));
+                .orElseThrow(() -> new NotFoundException("Cow not found: " + name));
         return cowMapper.toDto(cow);
     }
 
     @Override
     @Transactional
     public CowDto feedCowWithGrass(String cowName) {
-        Cow cow = cowRepository.findByName(cowName)
-                .orElseThrow(() -> new EntityNotFoundException("Cow not found: " + cowName));
+        Cow cow = findAliveCowByName(cowName);
 
         Grass grass = new Grass();
         cow.eatGrass(grass);
 
         grassRepository.save(grass);
-        cowRepository.save(cow);
+        return cowMapper.toDto(cowRepository.save(cow));
+    }
 
-        return cowMapper.toDto(cow);
+    private Cow findAliveCowByName(String cowName) {
+        Cow cow = cowRepository.findByName(cowName)
+                .orElseThrow(() -> new NotFoundException("Cow not found: " + cowName));
+
+        if (!cow.isAlive()) {
+            throw new IllegalStateException("Cannot feed dead cow: " + cowName);
+        }
+        return cow;
     }
 }

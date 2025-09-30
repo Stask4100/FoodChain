@@ -9,7 +9,6 @@ import com.kornievstas.FoodChain.mapper.GoatMapper;
 import com.kornievstas.FoodChain.repository.GoatRepository;
 import com.kornievstas.FoodChain.repository.GrassRepository;
 import com.kornievstas.FoodChain.service.GoatService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -55,22 +54,29 @@ public class GoatServiceImpl implements GoatService {
     @Override
     public GoatDto getGoat(String name) {
         Goat goat = goatRepository.findByName(name)
-                .orElseThrow(() -> new NotFoundException("Goat not found"));
+                .orElseThrow(() -> new NotFoundException("Goat not found: " + name));
         return goatMapper.toDto(goat);
     }
 
     @Override
     @Transactional
     public GoatDto feedGoatWithGrass(String goatName) {
-        Goat goat = goatRepository.findByName(goatName)
-                .orElseThrow(() -> new EntityNotFoundException("Goat not found: " + goatName));
+        Goat goat = findAliveGoatByName(goatName);
 
         Grass grass = new Grass();
         goat.eatGrass(grass);
 
         grassRepository.save(grass);
-        goatRepository.save(goat);
+        return goatMapper.toDto(goatRepository.save(goat));
+    }
 
-        return goatMapper.toDto(goat);
+    private Goat findAliveGoatByName(String goatName) {
+        Goat goat = goatRepository.findByName(goatName)
+                .orElseThrow(() -> new NotFoundException("Goat not found: " + goatName));
+
+        if (!goat.isAlive()) {
+            throw new IllegalStateException("Cannot feed dead goat: " + goatName);
+        }
+        return goat;
     }
 }

@@ -1,6 +1,5 @@
 package com.kornievstas.FoodChain.service.implementation;
 
-
 import com.kornievstas.FoodChain.dto.LionDto;
 import com.kornievstas.FoodChain.entity.Cow;
 import com.kornievstas.FoodChain.entity.Goat;
@@ -59,58 +58,34 @@ public class LionServiceImpl implements LionService {
     @Override
     public LionDto getLion(String name) {
         Lion lion = lionRepository.findByName(name)
-                .orElseThrow(() -> new NotFoundException("Lion not found"));
+                .orElseThrow(() -> new NotFoundException("Lion not found: " + name));
         return lionMapper.toDto(lion);
     }
 
     @Override
     public LionDto feedLionWithGoat(String lionName, String goatName) {
-        Lion lion = lionRepository.findByName(lionName)
-                .orElseThrow(() -> new NotFoundException("Lion not found"));
-
-        if (!lion.isAlive()) {
-            throw new InvalidActionException("Cannot feed dead lion");
-        }
-
-        Goat goat = goatRepository.findByName(goatName)
-                .orElseThrow(() -> new NotFoundException("Goat not found"));
-
-        if (!goat.isAlive()) {
-            throw new AlreadyDeadException("Goat is already dead");
-        }
+        Lion lion = findAliveLionByName(lionName);
+        Goat goat = findAliveGoatByName(goatName);
 
         goat.setAlive(false);
         goat.setEatenByLion(lion);
         lion.getEatenGoats().add(goat);
 
         goatRepository.save(goat);
-        Lion updatedLion = lionRepository.save(lion);
-        return lionMapper.toDto(updatedLion);
+        return lionMapper.toDto(lionRepository.save(lion));
     }
 
     @Override
     public LionDto feedLionWithCow(String lionName, String cowName) {
-        Lion lion = lionRepository.findByName(lionName)
-                .orElseThrow(() -> new NotFoundException("Lion not found"));
-
-        if (!lion.isAlive()) {
-            throw new InvalidActionException("Cannot feed dead lion");
-        }
-
-        Cow cow = cowRepository.findByName(cowName)
-                .orElseThrow(() -> new NotFoundException("Cow not found"));
-
-        if (!cow.isAlive()) {
-            throw new AlreadyDeadException("Cow is already dead");
-        }
+        Lion lion = findAliveLionByName(lionName);
+        Cow cow = findAliveCowByName(cowName);
 
         cow.setAlive(false);
         cow.setEatenByLion(lion);
         lion.getEatenCows().add(cow);
 
         cowRepository.save(cow);
-        Lion updatedLion = lionRepository.save(lion);
-        return lionMapper.toDto(updatedLion);
+        return lionMapper.toDto(lionRepository.save(lion));
     }
 
     @Override
@@ -125,4 +100,34 @@ public class LionServiceImpl implements LionService {
         }
     }
 
+
+    private Lion findAliveLionByName(String lionName) {
+        Lion lion = lionRepository.findByName(lionName)
+                .orElseThrow(() -> new NotFoundException("Lion not found: " + lionName));
+
+        if (!lion.isAlive()) {
+            throw new InvalidActionException("Cannot feed dead lion: " + lionName);
+        }
+        return lion;
+    }
+
+    private Goat findAliveGoatByName(String goatName) {
+        Goat goat = goatRepository.findByName(goatName)
+                .orElseThrow(() -> new NotFoundException("Goat not found: " + goatName));
+
+        if (!goat.isAlive()) {
+            throw new AlreadyDeadException("Goat is already dead: " + goatName);
+        }
+        return goat;
+    }
+
+    private Cow findAliveCowByName(String cowName) {
+        Cow cow = cowRepository.findByName(cowName)
+                .orElseThrow(() -> new NotFoundException("Cow not found: " + cowName));
+
+        if (!cow.isAlive()) {
+            throw new AlreadyDeadException("Cow is already dead: " + cowName);
+        }
+        return cow;
+    }
 }
