@@ -15,4 +15,7 @@ public interface LionService {
     LionDto feedLionWithGoat(String lionName, String goatName);
 
     LionDto feedLionWithCow(String lionName, String cowName);
+
+    LionDto feedLion(String lionName, String foodName, String foodType);
+
 }

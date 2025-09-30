@@ -36,18 +36,7 @@ public class LionController {
     public LionDto feedLion(@PathVariable String lionName,
                             @RequestParam String foodName,
                             @RequestParam String foodType) {
-
-        // Ми перевіряємо, який саме тип їжі передав користувач (коза чи корова).
-        // Якщо foodType = "goat", викликаємо метод сервісу, який годує лева козою.
-        // Якщо foodType = "cow", викликаємо метод сервісу, який годує лева коровою.
-        // Якщо foodType невідомий — кидаємо помилку.
-        switch (foodType.toLowerCase()) {
-            case "goat":
-                return lionService.feedLionWithGoat(lionName, foodName);
-            case "cow":
-                return lionService.feedLionWithCow(lionName, foodName);
-            default:
-                throw new RuntimeException("Unsupported food type: " + foodType);
-        }
+        return lionService.feedLion(lionName, foodName, foodType);
     }
+
 }

@@ -112,4 +112,17 @@ public class LionServiceImpl implements LionService {
         Lion updatedLion = lionRepository.save(lion);
         return lionMapper.toDto(updatedLion);
     }
+
+    @Override
+    public LionDto feedLion(String lionName, String foodName, String foodType) {
+        switch (foodType.toLowerCase()) {
+            case "goat":
+                return feedLionWithGoat(lionName, foodName);
+            case "cow":
+                return feedLionWithCow(lionName, foodName);
+            default:
+                throw new InvalidActionException("Unsupported food type: " + foodType);
+        }
+    }
+
 }
