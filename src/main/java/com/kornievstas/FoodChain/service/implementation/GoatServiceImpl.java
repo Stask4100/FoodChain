@@ -10,25 +10,19 @@ import com.kornievstas.FoodChain.repository.GoatRepository;
 import com.kornievstas.FoodChain.repository.GrassRepository;
 import com.kornievstas.FoodChain.service.GoatService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class GoatServiceImpl implements GoatService {
 
     private final GoatRepository goatRepository;
     private final GrassRepository grassRepository;
     private final GoatMapper goatMapper;
-
-    public GoatServiceImpl(GoatRepository goatRepository,
-                           GrassRepository grassRepository,
-                           GoatMapper goatMapper) {
-        this.goatRepository = goatRepository;
-        this.grassRepository = grassRepository;
-        this.goatMapper = goatMapper;
-    }
 
     @Override
     public GoatDto createGoat(String name) {

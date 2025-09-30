@@ -10,25 +10,19 @@ import com.kornievstas.FoodChain.repository.CowRepository;
 import com.kornievstas.FoodChain.repository.GrassRepository;
 import com.kornievstas.FoodChain.service.CowService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CowServiceImpl implements CowService {
 
     private final CowRepository cowRepository;
     private final GrassRepository grassRepository;
     private final CowMapper cowMapper;
-
-    public CowServiceImpl(CowRepository cowRepository,
-                          GrassRepository grassRepository,
-                          CowMapper cowMapper) {
-        this.cowRepository = cowRepository;
-        this.grassRepository = grassRepository;
-        this.cowMapper = cowMapper;
-    }
 
     @Override
     public CowDto createCow(String name) {

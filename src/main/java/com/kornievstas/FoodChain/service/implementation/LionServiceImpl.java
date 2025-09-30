@@ -13,28 +13,20 @@ import com.kornievstas.FoodChain.repository.CowRepository;
 import com.kornievstas.FoodChain.repository.GoatRepository;
 import com.kornievstas.FoodChain.repository.LionRepository;
 import com.kornievstas.FoodChain.service.LionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class LionServiceImpl implements LionService {
 
     private final LionRepository lionRepository;
     private final GoatRepository goatRepository;
     private final CowRepository cowRepository;
     private final LionMapper lionMapper;
-
-    public LionServiceImpl(LionRepository lionRepository,
-                           GoatRepository goatRepository,
-                           CowRepository cowRepository,
-                           LionMapper lionMapper) {
-        this.lionRepository = lionRepository;
-        this.goatRepository = goatRepository;
-        this.cowRepository = cowRepository;
-        this.lionMapper = lionMapper;
-    }
 
     @Override
     public LionDto createLion(String name) {
@@ -43,8 +35,7 @@ public class LionServiceImpl implements LionService {
         }
 
         Lion lion = new Lion(name);
-        Lion savedLion = lionRepository.save(lion);
-        return lionMapper.toDto(savedLion);
+        return lionMapper.toDto(lionRepository.save(lion));
     }
 
     @Override
@@ -99,7 +90,6 @@ public class LionServiceImpl implements LionService {
                 throw new InvalidActionException("Unsupported food type: " + foodType);
         }
     }
-
 
     private Lion findAliveLionByName(String lionName) {
         Lion lion = lionRepository.findByName(lionName)
