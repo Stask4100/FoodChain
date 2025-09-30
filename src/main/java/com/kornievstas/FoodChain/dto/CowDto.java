@@ -1,43 +1,31 @@
 package com.kornievstas.FoodChain.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
+import java.util.ArrayList;
 import java.util.List;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CowDto {
 
     private Long id;
+
+    @NotBlank(message = "Name cannot be blank")
+    @Size(min = 2, max = 20, message = "Name must be between 2 and 20 characters")
     private String name;
-    private boolean alive;
-    private List<String> eatenGrassNames;
 
-    public Long getId() {
-        return id;
-    }
+    @NotNull(message = "Alive status must be specified")
+    private Boolean alive;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean isAlive() {
-        return alive;
-    }
-
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
-
-    public List<String> getEatenGrassNames() {
-        return eatenGrassNames;
-    }
-
-    public void setEatenGrassNames(List<String> eatenGrassNames) {
-        this.eatenGrassNames = eatenGrassNames;
-    }
+    @Builder.Default
+    private List<String> eatenGrassNames = new ArrayList<>();
 }
