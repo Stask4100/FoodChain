@@ -1,5 +1,7 @@
 package com.kornievstas.FoodChain.entity;
 
+import com.kornievstas.FoodChain.interfaces.Animal;
+import com.kornievstas.FoodChain.interfaces.Edible;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Goat {
+public class Goat implements Animal<Grass>, Edible {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,5 +42,21 @@ public class Goat {
     public void eatGrass(Grass grass) {
         this.eatenGrasses.add(grass);
         grass.setEatenByGoat(this);
+    }
+
+    @Override
+    public void eat(Grass food) {
+        eatenGrasses.add(food);
+        food.setEatenByGoat(this);
+    }
+
+    @Override
+    public boolean isAlive() {
+        return alive;
+    }
+
+    @Override
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 }

@@ -1,5 +1,6 @@
 package com.kornievstas.FoodChain.entity;
 
+import com.kornievstas.FoodChain.interfaces.Edible;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,8 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Grass {
-
+public class Grass implements Edible {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
