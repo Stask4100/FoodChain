@@ -8,7 +8,7 @@ import lombok.Builder;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class GrassDto {
     private Long id;
 }

@@ -4,6 +4,7 @@ import com.kornievstas.FoodChain.dto.GoatDto;
 import com.kornievstas.FoodChain.entity.Goat;
 import com.kornievstas.FoodChain.entity.Grass;
 import com.kornievstas.FoodChain.exception.AlreadyExistsException;
+import com.kornievstas.FoodChain.exception.InvalidActionException;
 import com.kornievstas.FoodChain.exception.NotFoundException;
 import com.kornievstas.FoodChain.mapper.GoatMapper;
 import com.kornievstas.FoodChain.repository.GoatRepository;
@@ -69,7 +70,7 @@ public class GoatServiceImpl implements GoatService {
                 .orElseThrow(() -> new NotFoundException("Goat not found: " + goatName));
 
         if (!goat.isAlive()) {
-            throw new IllegalStateException("Cannot feed dead goat: " + goatName);
+            throw new InvalidActionException("Cannot feed dead goat: " + goatName);
         }
         return goat;
     }

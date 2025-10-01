@@ -4,6 +4,7 @@ import com.kornievstas.FoodChain.dto.CowDto;
 import com.kornievstas.FoodChain.entity.Cow;
 import com.kornievstas.FoodChain.entity.Grass;
 import com.kornievstas.FoodChain.exception.AlreadyExistsException;
+import com.kornievstas.FoodChain.exception.InvalidActionException;
 import com.kornievstas.FoodChain.exception.NotFoundException;
 import com.kornievstas.FoodChain.mapper.CowMapper;
 import com.kornievstas.FoodChain.repository.CowRepository;
@@ -69,8 +70,9 @@ public class CowServiceImpl implements CowService {
                 .orElseThrow(() -> new NotFoundException("Cow not found: " + cowName));
 
         if (!cow.isAlive()) {
-            throw new IllegalStateException("Cannot feed dead cow: " + cowName);
+            throw new InvalidActionException("Cannot feed dead cow: " + cowName);
         }
         return cow;
     }
+
 }

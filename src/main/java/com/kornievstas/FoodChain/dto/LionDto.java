@@ -11,10 +11,10 @@ import lombok.Builder;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data // генерує гетери, сетери, equals, hashCode, toString
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class LionDto {
 
     private Long id;
